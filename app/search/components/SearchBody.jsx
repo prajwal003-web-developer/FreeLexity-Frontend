@@ -25,7 +25,8 @@ const SearchBody = () => {
           setSearchable(false)
           const searchid = nanoid()
           setSearchId(searchid)
-          const res = await fetch(`http://localhost:8000/api/search?query=${query}&searchid=${searchid}`);
+          const res = await fetch(`https://freelexity-backend.onrender.com/api/search?query=${query}&searchid=${searchid}`);
+          // const res = await fetch(`http://localhost:8000/api/search?query=${query}&searchid=${searchid}`);
           if (!res.ok) throw new Error("Failed to fetch");
           const result = await res.json();
           setData(result.data.data?.webPages?.value);

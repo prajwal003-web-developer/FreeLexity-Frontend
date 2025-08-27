@@ -24,7 +24,8 @@ const AIBody = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `http://localhost:8000/api/summarize-ai?query=${query}&searchid=${searchid}`
+        // `http://localhost:8000/api/summarize-ai?query=${query}&searchid=${searchid}`
+        `https://freelexity-backend.onrender.com/api/summarize-ai?query=${query}&searchid=${searchid}`
       );
       if (!res.ok) throw new Error("Failed to fetch");
       const result = await res.json();
