@@ -78,7 +78,7 @@ const AIBody = () => {
         handleSearch(newQuery)
         setQuestion(newQuery)
         setnewQuery('')
-      }} className="border border-solid border-gray-3 w-[98%] mx-auto rounded-xl flex justify-center items-center overflow-clip py-2">
+      }} className="border border-solid border-gray-3 w-[98%] mx-auto rounded-xl flex justify-center items-center overflow-clip mt-2">
         <input value={newQuery} onChange={(e)=>{setnewQuery(e.target.value)}} placeholder="Ask Related Query" type="text" className="flex-1 p-2 border-none outline-none"/>  
         <button className="p-3 px-6 bg-[#00000014] cursor-pointer font-semibold flex justify-center items-center">
           <span className="hidden md:block">
