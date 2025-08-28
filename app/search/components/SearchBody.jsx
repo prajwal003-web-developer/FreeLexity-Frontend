@@ -93,7 +93,7 @@ const SearchBody = () => {
               </div>
 
               {/* Tooltip with URL */}
-              <span className="absolute bottom-[-2.5rem] opacity-0 group-hover:opacity-100 bg-black text-white text-xs px-3 py-1 rounded-lg shadow-lg whitespace-nowrap transition-all duration-300">
+              <span className="absolute z-30 bottom-[-2.5rem] opacity-0 group-hover:opacity-100 bg-black text-white text-xs px-3 py-1 rounded-lg shadow-lg whitespace-nowrap transition-all duration-300">
                 {domain}
               </span>
             </a>

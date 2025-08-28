@@ -61,7 +61,7 @@ const AIBody = () => {
 
   return (
     <div className="h-[60dvh] pb-2 overflow-y-auto bg-white border border-gray-200 shadow-lg rounded-xl prose prose-sm md:prose-base max-w-none flex flex-col">
-      <h1 className="p-3 font-semibold text-xs md:text-sm text-right bg-[#00000012]">
+      <h1 className="p-3 mb-2 font-semibold text-xs md:text-sm text-right bg-[#00000012]">
         {question || query}
       </h1>
       <div className="h-[80%] p-3 overflow-y-scroll noScrollBar">
@@ -78,7 +78,7 @@ const AIBody = () => {
         handleSearch(newQuery)
         setQuestion(newQuery)
         setnewQuery('')
-      }} className="border border-solid border-gray-3 w-[98%] mx-auto rounded-xl flex justify-center items-center overflow-clip">
+      }} className="border border-solid border-gray-3 w-[98%] mx-auto rounded-xl flex justify-center items-center overflow-clip py-2">
         <input value={newQuery} onChange={(e)=>{setnewQuery(e.target.value)}} placeholder="Ask Related Query" type="text" className="flex-1 p-2 border-none outline-none"/>  
         <button className="p-3 px-6 bg-[#00000014] cursor-pointer font-semibold flex justify-center items-center">
           <span className="hidden md:block">
