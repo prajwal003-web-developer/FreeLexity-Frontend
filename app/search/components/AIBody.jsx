@@ -6,6 +6,7 @@ import { useStore } from "@/app/contexts/searchStore";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { BiSend } from "react-icons/bi";
+import { useAiStore } from "@/app/contexts/useAi";
 
 const AIBody = () => {
   const searchParams = useSearchParams();
@@ -14,17 +15,20 @@ const AIBody = () => {
 
   const [newQuery, setnewQuery] = useState('')
 
-  const [question , setQuestion] = useState(query || '')
+  const [question, setQuestion] = useState('')
 
   const [loading, setLoading] = useState(true);
   const isSearchAble = useStore((s) => s.isSearchAble);
-  const [data, setData] = useState("");
+
+
+  const data = useAiStore(s => s.data)
+  const setData = useAiStore(s => s.setData)
 
   const handleSearch = async (query) => {
     try {
       setLoading(true);
       const res = await fetch(
-        // `http://localhost:8000/api/summarize-ai?query=${query}&searchid=${searchid}`
+        //`http://localhost:8000/api/summarize-ai?query=${query}&searchid=${searchid}`
         `https://freelexity-backend.onrender.com/api/summarize-ai?query=${query}&searchid=${searchid}`
       );
       if (!res.ok) throw new Error("Failed to fetch");
@@ -36,14 +40,14 @@ const AIBody = () => {
       setData("⚠️ Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+      setnewQuery('')
     }
   };
 
   useEffect(() => {
     if (isSearchAble) {
-      handleSearch(query);
-      setnewQuery('')
-      setQuestion('')
+     setLoading(false)
+     setQuestion('')
     } else {
       setLoading(true);
       setData("");
@@ -54,7 +58,7 @@ const AIBody = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] bg-white border border-gray-200 shadow-lg rounded-xl">
         <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid mb-3"></div>
-        <p className="text-gray-600 text-lg font-medium">Thinking...</p>
+        <p className="text-gray-600 text-lg font-medium">Searching... (may take some time)</p>
       </div>
     );
   }
@@ -73,18 +77,18 @@ const AIBody = () => {
           </p>
         )}
       </div>
-      <form onSubmit={(e)=>{
+      <form onSubmit={(e) => {
         e.preventDefault()
         handleSearch(newQuery)
         setQuestion(newQuery)
         setnewQuery('')
       }} className="border border-solid border-gray-3 w-[98%] mx-auto rounded-xl flex justify-center items-center overflow-clip mt-2">
-        <input value={newQuery} onChange={(e)=>{setnewQuery(e.target.value)}} placeholder="Ask Related Query" type="text" className="flex-1 p-2 border-none outline-none"/>  
+        <input value={newQuery} onChange={(e) => { setnewQuery(e.target.value) }} placeholder="Ask Related Query" type="text" className="flex-1 p-2 border-none outline-none" />
         <button className="p-3 px-6 bg-[#00000014] cursor-pointer font-semibold flex justify-center items-center">
           <span className="hidden md:block">
             Send
           </span>
-          <BiSend size={'1.3rem'}/>
+          <BiSend size={'1.3rem'} />
         </button>
       </form>
 
