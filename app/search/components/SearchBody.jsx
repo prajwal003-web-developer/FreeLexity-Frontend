@@ -52,7 +52,7 @@ const SearchBody = () => {
           setSearchable(true)
         } catch (err) {
           console.error(err);
-          //window.location.reload()
+          window.location.reload()
         } finally {
           setLoading(false);
         }

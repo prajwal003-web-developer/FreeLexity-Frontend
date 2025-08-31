@@ -25,7 +25,7 @@ const ShowImages: React.FC<ShowImagesProps> = ({ Files }) => {
             {allImages.map((img, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-64 h-36 rounded-lg overflow-hidden shadow-md hover:scale-105 transition-transform duration-300"
+                className="flex-shrink-0 md:w-64 md:h-36 w-32 h-24 rounded-lg overflow-hidden shadow-md hover:scale-105 transition-transform duration-300"
               >
                 <img
                   src={img.src}
