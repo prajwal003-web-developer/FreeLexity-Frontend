@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import { BiSend } from "react-icons/bi";
 import { useAiStore } from "@/app/contexts/useAi";
 
+
 const AIBody = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
@@ -20,6 +21,8 @@ const AIBody = () => {
   const [loading, setLoading] = useState(true);
   const isSearchAble = useStore((s) => s.isSearchAble);
 
+  const [Images, setImages] = useState([])
+
 
   const data = useAiStore(s => s.data)
   const setData = useAiStore(s => s.setData)
@@ -27,14 +30,27 @@ const AIBody = () => {
   const handleSearch = async (query) => {
     try {
       setLoading(true);
+      setImages([])
       const res = await fetch(
         //`http://localhost:8000/api/summarize-ai?query=${query}&searchid=${searchid}`
         `https://freelexity-backend.onrender.com/api/summarize-ai?query=${query}&searchid=${searchid}`
       );
       if (!res.ok) throw new Error("Failed to fetch");
       const result = await res.json();
+      const resultRequired = result.data
+      const arrayOfData = resultRequired.split("<image>")
 
-      setData(result.data); // Markdown text
+      setData(arrayOfData[0]); // Markdown text
+
+      const images = arrayOfData[1]
+
+      if (images) {
+        console.log('here')
+        const realImages = JSON.parse(images)
+
+        setImages(realImages.images)
+      }
+
     } catch (error) {
       console.error(error.message);
       setData("⚠️ Something went wrong. Please try again.");
@@ -46,8 +62,21 @@ const AIBody = () => {
 
   useEffect(() => {
     if (isSearchAble) {
-     setLoading(false)
-     setQuestion('')
+      const arrayOfData = data?.split("<image>")
+
+      setData(arrayOfData[0]); // Markdown text
+
+      const images = arrayOfData[1] 
+
+      if (images) {
+        const realImages = JSON.parse(images)
+
+        setImages(realImages.images)
+      }else{
+        setImages([])
+      }
+      setLoading(false)
+      setQuestion('')
     } else {
       setLoading(true);
       setData("");
@@ -64,11 +93,23 @@ const AIBody = () => {
   }
 
   return (
-    <div className="h-[60dvh] pb-2 overflow-y-auto bg-white border border-gray-200 shadow-lg rounded-xl prose prose-sm md:prose-base max-w-none flex flex-col">
+    <div className="h-[80dvh]  pb-2 overflow-y-auto bg-white border border-gray-200 shadow-lg rounded-xl prose prose-sm md:prose-base max-w-none flex flex-col">
       <h1 className="p-3 mb-2 font-semibold text-xs md:text-sm text-right bg-[#00000012]">
         {question || query}
       </h1>
-      <div className="h-[80%] p-3 overflow-y-scroll noScrollBar">
+
+      <div className="flex-1 p-3 overflow-y-scroll noScrollBar">
+
+        {
+          Images.length > 0 &&
+          <div className="flex flex-wrap gap-3 p-3 justify-center">
+            {
+              Images.map((itm, idx) => {
+                return <img src={itm} alt="Error" className="h-40 w-64 rounded-lg object-center object-contain bg-gray-600" key={idx} />
+              })
+            }
+          </div>
+        }
         {data ? (
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{data}</ReactMarkdown>
         ) : (
